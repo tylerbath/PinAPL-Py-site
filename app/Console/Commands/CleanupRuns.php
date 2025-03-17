@@ -67,6 +67,20 @@ class CleanupRuns extends Command
 		}
 	}
 
+	$this->info("Now looking for abandoned data dirs");
+	$dataDirBaseNames=array_map('basename',glob('storage/data/*'));
+	$nonPermanentDataDirNames=array_filter($dataDirBaseNames,function($v){return preg_match('/^\d+_?\d*$/',$v);});
+	$dataLinks=glob('storage/runs/*/workingDir/Data');
+	
+	$usedLinkNames=array_map(function($v){return basename(realpath($v));},$dataLinks);
+	$abandonedDataDirs=array_diff($nonPermanentDataDirNames, $usedLinkNames);
+
+	foreach ($abandonedDataDirs as $dir) {
+		$fullDir = storage_path()."/data/$dir";
+		$this->info("Deleting datadir $fullDir");
+		\File::deleteDirectory($fullDir);	
+	}
+
 
 
 

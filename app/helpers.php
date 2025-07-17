@@ -16,7 +16,7 @@ function csvToMysql ($file, $table, $columns, $seperator=',', $skipLines=0,$extr
 	if ($skipLines) {
 		$query .= " IGNORE $skipLines LINES ";
 	}
-	$query .= ' ('.implode($columns,',').')';
+	$query .= ' ('.implode(',',$columns).')';
 	if ($extraData) {
 		$query .= ' SET';
 		foreach ($extraData as $key => $value) {

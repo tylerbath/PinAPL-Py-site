@@ -44,6 +44,7 @@ class StartRunTask extends Command
     {
 
         $runId = $this->argument('runId');
+        $task = $this->argument('task');
         try {
             $run = Run::findOrFail($runId);
         } catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -52,12 +53,12 @@ class StartRunTask extends Command
         }
 
         switch($task){
-          case 'start'
+          case 'start':
             break;
-          case 'compress'
+          case 'compress':
             dispatch(new \App\Jobs\CompressRun($run));
             break;
-          case 'import-rankings'
+          case 'import-rankings':
             $run->importRankings();
             $run->status = 'finished';
             $run->save();
@@ -65,14 +66,13 @@ class StartRunTask extends Command
                 Mail::to($run->email)->queue(new RunFinished($run));
             }
             break;
-          case 'delete'
+          case 'delete':
             break;
           default:
             $this->error("$step is not a valid run task. Valid steps are: start, compress, import-rankings, delete");
             return;
         }
         
-        dispatch((new \App\Jobs\RestartRun($run))->onQueue("start_run"));
 
 
     }

@@ -43,7 +43,7 @@ class RestartRun extends Command
         try {
             $run = Run::findOrFail($runId);
         } catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $this->error("Run $runHash does not exist");
+            $this->error("Run $runId does not exist");
             return;
         }
 

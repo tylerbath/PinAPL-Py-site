@@ -30,6 +30,18 @@ return [
     | Application Environment
     |--------------------------------------------------------------------------
     |
+    | This value specifies the webserver that is being used to host the site. I
+    | put this in because nginx doesn't support XSendFile in a compatible fashion.
+    */
+
+    'webserver_user' => env('WEBSERVER_USER','www-data'),
+    'webserver_uid' => env('WEBSERVER_UID',shell_exec("id -u www-data")),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Environment
+    |--------------------------------------------------------------------------
+    |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
     | services your application utilizes. Set this in your ".env" file.
